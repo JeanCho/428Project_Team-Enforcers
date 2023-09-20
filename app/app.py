@@ -7,7 +7,7 @@ app = Flask(__name__)
 db_connection = psycopg2.connect(
     database="428Project_Team-Enforcers",
     user="postgres",
-    password="BAB0Y!",
+    password="mustafa",
     host="localhost",
     port="5432"
 )
@@ -22,7 +22,7 @@ def login():
     password = request.form['password']
     
     cursor = db_connection.cursor()
-    cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+    cursor.execute("SELECT * FROM user_credentials WHERE username = %s AND password_hash = %s", (username, password))
     user = cursor.fetchone()
     cursor.close()
     
