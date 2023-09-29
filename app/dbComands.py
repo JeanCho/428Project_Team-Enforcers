@@ -18,23 +18,26 @@ def createConnection():
 #all of there passwords are set to 123 
 #one of them is an author no idea which
 def fillDB():
+    print("\nFilling DB with testers\n")
     db_connection = createConnection() 
     cursor = db_connection.cursor()
     USERNAME = ("Tester1","Tester2","John Doe")
-    sql = """"
-        INSERT INTO ACCOUNT (User) 
-        PASSWORD("123")
-        USER_ID(%s)
+    sql = """
+        INSERT INTO ACCOUNT(USERNAME, PASSWORD, USER_ID) 
+        VALUES(%s, %s,%s)
 
     """
-    for  User in USERNAME:
-        cursor.execute(sql, (User,"123",))
+    x = 1
+    Pass = "123"
+    for  Name in USERNAME:
+        cursor.execute(sql, (Name,Pass,x ))
+        x = x +1
     
-    User_id = cursor.fetchone()[0]
+    User_id = 3
     sql = """
-        INSERT INTO AUTHOR(User_id) ID(%s) 
+        INSERT INTO AUTHOR(USER_ID, ID) VALUES(%s,%s) 
     """
-    cursor.execute(sql, (User_id,))
+    cursor.execute(sql, (User_id, 1))
     cursor.close()
     db_connection.commit()
     db_connection.close()

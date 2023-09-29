@@ -14,7 +14,7 @@ def createTable():
    cursor = db_connection.cursor()
 
    ##sql = [] changing to this to clean up the exucutes later but for testing doing it 1 at a time
-   cursor.execute("DROP TABLE IF EXISTS Account")
+   
    # im sure password has some special rules but I don't know them yet
    # ill change it later.
    # thinking about leaving password as is for an easy change later
@@ -28,7 +28,7 @@ def createTable():
 
    cursor.execute(sql)
 
-   cursor.execute("DROP TABLE IF EXISTS AUTHOR")
+   
    # implement relational database for a few of these
    # relation with the user who can act as an AUTHOR
    sql = '''CREATE TABLE AUTHOR (
@@ -39,7 +39,7 @@ def createTable():
 
    cursor.execute(sql)
 
-   cursor.execute("DROP TABLE IF EXISTS ARTICLE")
+   
    #Relation with who posted it
    sql = '''CREATE TABLE ARTICLE (
       ID INT PRIMARY KEY,
@@ -51,7 +51,7 @@ def createTable():
 
    cursor.execute(sql)
 
-   cursor.execute("DROP TABLE IF EXISTS COMMIT")
+   
    #Relation with who posted it and where it was posted
    sql = '''CREATE TABLE COMMIT (
       USER_ID INT,
