@@ -32,7 +32,8 @@ def createTable():
    # implement relational database for a few of these
    # relation with the user who can act as an AUTHOR
    sql = '''CREATE TABLE AUTHOR (
-      USER_ID INT, 
+      ID INT PRIMARY KEY,
+      USER_ID INT,
       CONSTRAINT fk_account FOREIGN KEY(USER_ID) REFERENCES ACCOUNT(USER_ID)
       );'''
 
@@ -42,10 +43,10 @@ def createTable():
    #Relation with who posted it
    sql = '''CREATE TABLE ARTICLE (
       ID INT PRIMARY KEY,
-      AURTHOR_ID INT,
+      AUTHOR_ID INT,
       TITLE TEXT NOT NULL,
       ARTICLE TEXT NOT NULL,
-      CONSTRAINT fk_author FOREIGN KEY(AUTHOR_ID) REFERENCES AUTHOR(user-id) 
+      CONSTRAINT fk_author FOREIGN KEY(AUTHOR_ID) REFERENCES AUTHOR(ID) 
       );'''
 
    cursor.execute(sql)
@@ -56,8 +57,8 @@ def createTable():
       USER_ID INT,
       COMMIT VARCHAR(500),
       ARTICLE_ID INT,
-      CONSTRAINT fk_user FOREIGN KEY(USER_ID) REFERNCES ACCOUNT(USER_ID),
-      CONSTRAINT fk_article FOREIGN KEY(ARTICLE_ID) REGERENCES ARTICLE(ID)
+      CONSTRAINT fk_user FOREIGN KEY(USER_ID) REFERENCES ACCOUNT(USER_ID),
+      CONSTRAINT fk_article FOREIGN KEY(ARTICLE_ID) REFERENCES ARTICLE(ID)
       );'''
 
    cursor.execute(sql)

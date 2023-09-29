@@ -1,8 +1,9 @@
 
-#returns a cursor 
+
 import psycopg2
 
-
+#returns a cursor
+#rember to end your connections when done
 def createConnection():
     db_connection = psycopg2.connect(
     database="428Project_Team-Enforcers",
@@ -13,13 +14,15 @@ def createConnection():
    )
     
     return db_connection
-    
-def ifEmpty():
+#if the DB is empty adds two testers and a John Doe
+#all of there passwords are set to 123 
+#one of them is an author no idea which
+def fillDB():
     db_connection = createConnection() 
     cursor = db_connection.cursor()
     USERNAME = ("Tester1","Tester2","John Doe")
     sql = """"
-        INSERT INTO Account (User) 
+        INSERT INTO ACCOUNT (User) 
         PASSWORD("123")
         USER_ID(%s)
 
@@ -29,5 +32,9 @@ def ifEmpty():
     
     User_id = cursor.fetchone()[0]
     sql = """
-        INSERT INTO Author 
+        INSERT INTO AUTHOR(User_id) ID(%s) 
     """
+    cursor.execute(sql, (User_id,))
+    cursor.close()
+    db_connection.commit()
+    db_connection.close()

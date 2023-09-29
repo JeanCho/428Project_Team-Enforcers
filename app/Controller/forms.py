@@ -15,3 +15,4 @@ def get_articals():
     cursor.close()
     db_connection.close()
     return articalRecords
+
