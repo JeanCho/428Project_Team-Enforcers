@@ -6,7 +6,7 @@ def createTable():
    db_connection = psycopg2.connect(
     database="428Project_Team-Enforcers",
     user="postgres",
-    password="Code1Lock1",
+    password="durian123",
     host="localhost",
     port="5432"
    )
@@ -14,7 +14,7 @@ def createTable():
    cursor = db_connection.cursor()
 
    ##sql = [] changing to this to clean up the exucutes later but for testing doing it 1 at a time
-   cursor.execute("DROP TABLE IF EXISTS Account")
+   
    # im sure password has some special rules but I don't know them yet
    # ill change it later.
    # thinking about leaving password as is for an easy change later
@@ -28,36 +28,37 @@ def createTable():
 
    cursor.execute(sql)
 
-   cursor.execute("DROP TABLE IF EXISTS AUTHOR")
+   
    # implement relational database for a few of these
    # relation with the user who can act as an AUTHOR
    sql = '''CREATE TABLE AUTHOR (
-      USER_ID INT, 
+      ID INT PRIMARY KEY,
+      USER_ID INT,
       CONSTRAINT fk_account FOREIGN KEY(USER_ID) REFERENCES ACCOUNT(USER_ID)
       );'''
 
    cursor.execute(sql)
 
-   cursor.execute("DROP TABLE IF EXISTS ARTICLE")
+   
    #Relation with who posted it
    sql = '''CREATE TABLE ARTICLE (
       ID INT PRIMARY KEY,
-      AURTHOR_ID INT,
+      AUTHOR_ID INT,
       TITLE TEXT NOT NULL,
       ARTICLE TEXT NOT NULL,
-      CONSTRAINT fk_author FOREIGN KEY(AUTHOR_ID) REFERENCES AUTHOR(user-id) 
+      CONSTRAINT fk_author FOREIGN KEY(AUTHOR_ID) REFERENCES AUTHOR(ID) 
       );'''
 
    cursor.execute(sql)
 
-   cursor.execute("DROP TABLE IF EXISTS COMMIT")
+   
    #Relation with who posted it and where it was posted
-   sql = '''CREATE TABLE COMMIT (
+   sql = '''CREATE TABLE COMMENT (
       USER_ID INT,
       COMMIT VARCHAR(500),
       ARTICLE_ID INT,
-      CONSTRAINT fk_user FOREIGN KEY(USER_ID) REFERNCES ACCOUNT(USER_ID),
-      CONSTRAINT fk_article FOREIGN KEY(ARTICLE_ID) REGERENCES ARTICLE(ID)
+      CONSTRAINT fk_user FOREIGN KEY(USER_ID) REFERENCES ACCOUNT(USER_ID),
+      CONSTRAINT fk_article FOREIGN KEY(ARTICLE_ID) REFERENCES ARTICLE(ID)
       );'''
 
    cursor.execute(sql)
