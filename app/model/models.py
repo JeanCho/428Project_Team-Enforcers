@@ -6,7 +6,7 @@ def createTable():
    db_connection = psycopg2.connect(
     database="428Project_Team-Enforcers",
     user="postgres",
-    password="Code1Lock1",
+    password="durian123",
     host="localhost",
     port="5432"
    )
@@ -53,7 +53,7 @@ def createTable():
 
    
    #Relation with who posted it and where it was posted
-   sql = '''CREATE TABLE COMMIT (
+   sql = '''CREATE TABLE COMMENT (
       USER_ID INT,
       COMMIT VARCHAR(500),
       ARTICLE_ID INT,
