@@ -1,5 +1,5 @@
 from flask import Blueprint,render_template
-from app.model.models import db
+from model.models import db
 
 bp_errors = Blueprint('errors', __name__)
 

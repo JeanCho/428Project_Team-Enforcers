@@ -5,16 +5,8 @@ from dbComands import createConnection, fillDB
 
 app = Flask(__name__)
 
-
-
 # Configure your PostgreSQL connection
-db_connection = psycopg2.connect(
-    database="428Project_Team-Enforcers",
-    user="postgres",
-    password="durian123",
-    host="localhost",
-    port="5432"
-)
+db_connection = createConnection()
 
 ##createTable()
 
@@ -29,6 +21,7 @@ if(result[0] == 0):
 
 
 app.secret_key = 'your_secret_key'
+
 
 @app.route('/')
 def home():
@@ -50,10 +43,10 @@ def login():
     else:
         return "Login failed. Please try again."
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if 'username' in session:
-        return f"Welcome, {session['username']}! This is your dashboard."
+        return render_template('dashboard.html')
     else:
         return redirect(url_for('home'))
 
@@ -61,6 +54,11 @@ def dashboard():
 def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
+
+@app.route('/create')
+def create():
+    if 'username' in session:
+        return render_template('createarticle.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
