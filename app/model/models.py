@@ -1,15 +1,9 @@
 import psycopg2;
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT;
-
+from dbComands import createConnection
 
 def createTable():
-   db_connection = psycopg2.connect(
-    database="428Project_Team-Enforcers",
-    user="postgres",
-    password="durian123",
-    host="localhost",
-    port="5432"
-   )
+   db_connection = createConnection()
    
    cursor = db_connection.cursor()
 

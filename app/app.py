@@ -8,13 +8,7 @@ app = Flask(__name__)
 
 
 # Configure your PostgreSQL connection
-db_connection = psycopg2.connect(
-    database="428Project_Team-Enforcers",
-    user="postgres",
-    password="durian123",
-    host="localhost",
-    port="5432"
-)
+db_connection = createConnection()
 
 ##createTable()
 
@@ -53,7 +47,11 @@ def login():
 @app.route('/dashboard')
 def dashboard():
     if 'username' in session:
-        return f"Welcome, {session['username']}! This is your dashboard."
+        db_connection = createConnection()
+        curr = db_connection.cursor()
+        curr.execute('SELECT TITLE FROM ARTICLE;')
+        articles = curr.fetchall()
+        return render_template("Dashboard.html", art = articles)
     else:
         return redirect(url_for('home'))
 
