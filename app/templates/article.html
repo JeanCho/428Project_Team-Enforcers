@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .article-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Article</h1>
+    <div class="article-content">
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.content }}</p>
+    </div>
+    <!-- Add navigation links or buttons here, e.g., a link to go back to the dashboard -->
+    <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+</body>
+</html>

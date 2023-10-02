@@ -6,9 +6,9 @@ import psycopg2
 #rember to end your connections when done
 def createConnection():
     db_connection = psycopg2.connect(
-    database="428Project_Team-Enforcers",
+    database="postgres",
     user="postgres",
-    password="Code1Lock1",
+    password="0327",
     host="localhost",
     port="5432"
    )
