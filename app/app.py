@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import psycopg2
 from model.models import createTable
 from dbComands import createConnection, fillDB
+from Controller.forms import get_articals, get_artical_from_title, get_author_from_id
 
 app = Flask(__name__)
 
@@ -46,9 +47,36 @@ def login():
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if 'username' in session:
-        return render_template('dashboard.html')
+        
+        db_connection = createConnection()
+        curr = db_connection.cursor()
+        curr.execute('SELECT TITLE FROM ARTICLE')
+        articles = curr.fetchall()
+        art =[]
+        for a in articles:
+            art.append(a[0])
+        return render_template('dashboard.html', art = art)
     else:
         return redirect(url_for('home'))
+
+@app.route('/view_article/<title>')
+def view_article(title):
+    #print(title[0][0])
+    
+    article = get_artical_from_title(title)
+    # Check if the article exists
+    username = get_author_from_id(article[0][1])
+    print(article)
+    if article is None:
+        # Handle the case where the article doesn't exist (e.g., display an error message)
+        return render_template('error.html', message='Article not found')
+
+    story = {
+        'author_id': username,
+        'title':  article[0][2],
+        'content':  article [0][3]
+    }   
+    return render_template('story.html', story=story)
 
 @app.route('/logout')
 def logout():

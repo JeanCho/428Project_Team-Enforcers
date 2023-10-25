@@ -8,7 +8,7 @@ def createConnection():
     db_connection = psycopg2.connect(
     database="428Project_Team-Enforcers",
     user="postgres",
-    password="durian123",
+    password="Code1Lock1",#durian123
     host="localhost",
     port="5432"
    )
@@ -38,6 +38,14 @@ def fillDB():
         INSERT INTO AUTHOR(USER_ID, ID) VALUES(%s,%s) 
     """
     cursor.execute(sql, (User_id, 1))
+
+    sql = """
+        INSERT INTO ARTICLE(ID, AUTHOR_ID, TITLE, ARTICLE)
+        VALUES(%s, %s, %s, %s)
+        """
+    
+    cursor.execute(sql,(1,1,"HELLO WORLD","This is a test of hello world"))
+    cursor.execute(sql,(2,1,"Strange_Test","this is a writing test created for testing purposes"))
     cursor.close()
     db_connection.commit()
     db_connection.close()

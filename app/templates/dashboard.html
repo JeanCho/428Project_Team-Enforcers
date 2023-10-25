@@ -7,5 +7,11 @@
 </head>
 
 <body style="background-image: linear-gradient(to right, #ffefba, #ffffff);">
-
+    <h1>Article board</h1>
+    <div class="enter class here">
+        {% for a in art %}
+            <a href="{{ url_for('view_article', title=a) }}">{{a}}</a>
+            <br>
+        {% endfor %}
+    </div>
 </body>
