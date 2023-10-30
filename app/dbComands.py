@@ -8,7 +8,7 @@ def createConnection():
     db_connection = psycopg2.connect(
     database="428Project_Team-Enforcers",
     user="postgres",
-    password="Code1Lock1",
+    password="Code1Lock1",#durian123
     host="localhost",
     port="5432"
    )
@@ -45,6 +45,7 @@ def fillDB():
         """
     
     cursor.execute(sql,(1,1,"HELLO WORLD","This is a test of hello world"))
+    cursor.execute(sql,(2,1,"Strange_Test","this is a writing test created for testing purposes"))
     cursor.close()
     db_connection.commit()
     db_connection.close()

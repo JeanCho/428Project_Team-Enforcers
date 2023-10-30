@@ -2,10 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import psycopg2
 from model.models import createTable
 from dbComands import createConnection, fillDB
+from Controller.forms import get_articals, get_artical_from_title, get_author_from_id
 
 app = Flask(__name__)
-
-
 
 # Configure your PostgreSQL connection
 db_connection = createConnection()
@@ -23,6 +22,7 @@ if(result[0] == 0):
 
 
 app.secret_key = 'your_secret_key'
+
 
 @app.route('/')
 def home():
@@ -44,21 +44,49 @@ def login():
     else:
         return "Login failed. Please try again."
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     if 'username' in session:
+        
         db_connection = createConnection()
         curr = db_connection.cursor()
-        curr.execute('SELECT TITLE FROM ARTICLE;')
+        curr.execute('SELECT TITLE FROM ARTICLE')
         articles = curr.fetchall()
-        return render_template("Dashboard.html", art = articles)
+        art =[]
+        for a in articles:
+            art.append(a[0])
+        return render_template('dashboard.html', art = art)
     else:
         return redirect(url_for('home'))
+
+@app.route('/view_article/<title>')
+def view_article(title):
+    #print(title[0][0])
+    
+    article = get_artical_from_title(title)
+    # Check if the article exists
+    username = get_author_from_id(article[0][1])
+    print(article)
+    if article is None:
+        # Handle the case where the article doesn't exist (e.g., display an error message)
+        return render_template('error.html', message='Article not found')
+
+    story = {
+        'author_id': username,
+        'title':  article[0][2],
+        'content':  article [0][3]
+    }   
+    return render_template('story.html', story=story)
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
+
+@app.route('/create')
+def create():
+    if 'username' in session:
+        return render_template('createarticle.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
