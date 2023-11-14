@@ -2,7 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session
 import psycopg2
 from model.models import createTable
 from dbComands import createConnection, fillDB
-from Controller.forms import get_articals, get_artical_from_title, get_author_from_id
+from Controller.forms import get_articals, get_artical_from_title, get_author_from_id, get_comments_from_article_id
+from Controller.forms import get_user_id, get_comments_from_article_id, add_comment                
 
 app = Flask(__name__)
 
@@ -55,6 +56,8 @@ def dashboard():
         art =[]
         for a in articles:
             art.append(a[0])
+        curr.close()
+        db_connection.close()
         return render_template('dashboard.html', art = art)
     else:
         return redirect(url_for('home'))
@@ -66,6 +69,11 @@ def view_article(title):
     article = get_artical_from_title(title)
     # Check if the article exists
     username = get_author_from_id(article[0][1])
+    #pulls all comments made about this article
+    comments = get_comments_from_article_id(article[0][0])
+    comment =[]
+    for comm in comments:
+        comment.append(comm[0])
     print(article)
     if article is None:
         # Handle the case where the article doesn't exist (e.g., display an error message)
@@ -74,9 +82,10 @@ def view_article(title):
     story = {
         'author_id': username,
         'title':  article[0][2],
-        'content':  article [0][3]
+        'content':  article [0][3],
+        'artId': article [0][0]
     }   
-    return render_template('story.html', story=story)
+    return render_template('story.html', story=story, comments = comment)
 
 @app.route('/logout')
 def logout():
@@ -87,6 +96,20 @@ def logout():
 def create():
     if 'username' in session:
         return render_template('createarticle.html')
+
+@app.route('/postComment/<storyId>/<title>',methods=['POST'])
+def postComment(storyId, title):
+    comment = request.form['COMMIT']
+    #story = request.form['story']
+    print(storyId)
+    print(title)
+    if 'username' in session:
+
+        user_id = get_user_id(session.get('username'))
+        add_comment(comment, storyId, user_id[0][0])
+        return redirect(url_for('view_article', title = title))
+    
+    return redirect(url_for('story.html'))
 
 if __name__ == '__main__':
     app.run(debug=True)

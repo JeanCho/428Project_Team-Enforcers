@@ -13,6 +13,18 @@
             
        
     </div>
+    <h3>Join the Conversation</h3>
+    <div>
+        <form method="POST" action=" {{url_for('postComment', storyId = story.artId, title = story.title)}}">
+            <input type="text" id="COMMIT" name="COMMIT" placeholder="Write a comment" required><br><br>
+            <button type="submit">Post</button>
+        </form>
+    </div>
+    <div>
+        {% for comm in comments %}
+            Annon: {{comm}} <br>
+        {% endfor %}
+    </div>
     
 </body>
 </html>
