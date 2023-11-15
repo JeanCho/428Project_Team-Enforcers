@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Create Account</title>
+
 </head>
 <body style="background-image: linear-gradient(to right, #ffefba, #ffffff);">
-    <h1>Login</h1>
-    <form method="POST" action="/login">
+    <h1>Register Account</h1>
+    <form method="POST" action="/register">
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" required><br><br>
         
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
         
-        <button type="submit">Login</button> <br><br>
+        <button type="submit">Create</button> <br><br>
     </form>
-    Don't have an account? Sign up <a href = "{{url_for('register') }}">here</a>!
 </body>
 </html>
 <!DOCTYPE html>
@@ -24,6 +24,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
+    <title>Create Account</title>
 </head>
 </html>

@@ -1,7 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash, g
+from flask_login import current_user, LoginManager
 import psycopg2
 from model.models import createTable
-from dbComands import createConnection, fillDB
+from dbComands import createConnection
 from Controller.forms import get_articals, get_artical_from_title, get_author_from_id
 
 app = Flask(__name__)
@@ -13,12 +14,12 @@ db_connection = createConnection()
 
 cursor = db_connection.cursor()
 
-count = [] 
-cursor.execute("SELECT count(*) from ACCOUNT", count)
-result = cursor.fetchone()
-print(result)
-if(result[0] == 0):
-    fillDB()
+# count = [] 
+# cursor.execute("SELECT count(*) from ACCOUNT", count)
+# result = cursor.fetchone()
+# print(result)
+# if(result[0] == 0):
+#     fillDB()
 
 
 app.secret_key = 'your_secret_key'
@@ -28,21 +29,51 @@ app.secret_key = 'your_secret_key'
 def home():
     return render_template('login.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET','POST'])
 def login():
     username = request.form['username']
     password = request.form['password']
-    
     cursor = db_connection.cursor()
     cursor.execute("SELECT * FROM ACCOUNT WHERE username = %s AND password = %s", (username, password))
-    user = cursor.fetchone()
+    user = cursor.fetchone() 
     cursor.close()
     
     if user:
         session['username'] = username
+        flash('Logged in successfully')
         return redirect(url_for('dashboard'))
     else:
         return "Login failed. Please try again."
+    
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == "POST":
+        username = request.form.get('username')
+        password = request.form.get('password')
+        cursor = db_connection.cursor()
+        cursor.execute("SELECT username FROM ACCOUNT WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        if user:
+            print('The username exists! Try a new one')
+            return render_template('register.html')
+        else:
+            print("Successfully registered!")
+            sql = """ INSERT INTO ACCOUNT(USERNAME, PASSWORD) VALUES(%s, %s)"""
+            cursor.execute(sql, (username, password))
+            cursor.execute("SELECT user_id FROM ACCOUNT ORDER BY user_id DESC LIMIT 1")
+            user = cursor.fetchone()
+            print(user)
+            sql1 = """ INSERT INTO AUTHOR(USER_ID) VALUES(%s) """
+            cursor.execute(sql1, (user))
+            db_connection.commit()
+            cursor.close()
+            return redirect(url_for('dashboard'))
+    else:
+        return render_template('register.html')
+            
+        
+
+   
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
@@ -83,10 +114,23 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('home'))
 
-@app.route('/create')
-def create():
-    if 'username' in session:
-        return render_template('createarticle.html')
+@app.route('/create_article', methods = ['GET','POST'])
+def create_article():
+    if 'username' in session: 
+        if request.method == 'POST':
+            new_title = request.form.get('title')
+            new_content = request.form.get('content')
+            cursor = db_connection.cursor()
+            cursor.execute("select user_id from ACCOUNT where username = '" + str(session.get('username')) + "'")
+            user_id = cursor.fetchall() 
+            sql = """ INSERT INTO ARTICLE(AUTHOR_ID, TITLE, ARTICLE) VALUES(%s, %s, %s)"""
+            cursor.execute(sql, (user_id[0], new_title,new_content))
+            db_connection.commit()
+            return redirect(url_for('dashboard'))
+        else:
+            return render_template('createarticle.html') 
+    else:
+        return render_template('createarticle.html') 
 
 if __name__ == '__main__':
     app.run(debug=True)
