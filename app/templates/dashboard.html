@@ -8,6 +8,7 @@
 
 <body style="background-image: linear-gradient(to right, #ffefba, #ffffff);">
     <h1>Article board</h1>
+    <button type = "button"><a href = "{{url_for('create_article') }}">Create</a></button> <button type = "button"><a href = "{{url_for('logout') }}">Logout</a></button><br><br>
     <div class="enter class here">
         {% for a in art %}
             <a href="{{ url_for('view_article', title=a) }}">{{a}}</a>

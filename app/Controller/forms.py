@@ -52,6 +52,7 @@ def get_author_from_id(id):
     curr.execute(sql2)
     username= curr.fetchall()
     return username[0][1]
+<<<<<<< HEAD
 
 def get_comments_from_article_id(id):
     db_connection = createConnection()
@@ -98,3 +99,5 @@ def add_comment(comment, artId, user_id):
 
 
 
+=======
+>>>>>>> controller_setup

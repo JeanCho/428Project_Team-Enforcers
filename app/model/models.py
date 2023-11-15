@@ -14,8 +14,8 @@ def createTable():
    # thinking about leaving password as is for an easy change later
    sql = """
       CREATE TABLE ACCOUNT(
-         USER_ID INT PRIMARY KEY,
-         USERNAME VARCHAR(20) NOT NULL,
+         USER_ID SERIAL PRIMARY KEY,
+         USERNAME VARCHAR(20) UNIQUE,
          PASSWORD VARCHAR(20) 
       )
       """
@@ -26,7 +26,7 @@ def createTable():
    # implement relational database for a few of these
    # relation with the user who can act as an AUTHOR
    sql = '''CREATE TABLE AUTHOR (
-      ID INT PRIMARY KEY,
+      ID SERIAL PRIMARY KEY,
       USER_ID INT,
       CONSTRAINT fk_account FOREIGN KEY(USER_ID) REFERENCES ACCOUNT(USER_ID)
       );'''
@@ -36,7 +36,7 @@ def createTable():
    
    #Relation with who posted it
    sql = '''CREATE TABLE ARTICLE (
-      ID INT PRIMARY KEY,
+      ID SERIAL PRIMARY KEY,
       AUTHOR_ID INT,
       TITLE TEXT NOT NULL,
       ARTICLE TEXT NOT NULL,
