@@ -8,7 +8,7 @@ def createConnection():
     db_connection = psycopg2.connect(
     database="428Project_Team-Enforcers",
     user="postgres",
-    password="durian123",#Code1Lock1
+    password="Code1Lock1",#durian123
     host="localhost",
     port="5432"
    )

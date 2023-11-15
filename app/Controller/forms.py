@@ -34,12 +34,7 @@ def get_artical_from_title(title):
 def get_author_from_id(id):
     db_connection = createConnection()
     curr = db_connection.cursor()
-    sql = """
-        select * from AUTHOR where '
-    """
-
-    sql = sql + str(id) + "' "
-
+    sql = "select * from AUTHOR where USER_ID ='"+ str(id) + "' "
     curr.execute(sql)
     author = curr.fetchall()
      
@@ -52,7 +47,6 @@ def get_author_from_id(id):
     curr.execute(sql2)
     username= curr.fetchall()
     return username[0][1]
-<<<<<<< HEAD
 
 def get_comments_from_article_id(id):
     db_connection = createConnection()
@@ -99,5 +93,3 @@ def add_comment(comment, artId, user_id):
 
 
 
-=======
->>>>>>> controller_setup

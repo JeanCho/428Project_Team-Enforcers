@@ -1,15 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, g
-from flask_login import current_user, LoginManager
+#from flask_login import current_user, LoginManager
 import psycopg2
 from model.models import createTable
-<<<<<<< HEAD
-from dbComands import createConnection, fillDB
+
+from dbComands import createConnection
 from Controller.forms import get_articals, get_artical_from_title, get_author_from_id, get_comments_from_article_id
 from Controller.forms import get_user_id, get_comments_from_article_id, add_comment                
-=======
-from dbComands import createConnection
-from Controller.forms import get_articals, get_artical_from_title, get_author_from_id
->>>>>>> controller_setup
 
 app = Flask(__name__)
 
