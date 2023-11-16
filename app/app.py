@@ -24,8 +24,8 @@ logger = logging.getLogger(__name__)
 def send_logs(log_group, log_stream, log_data):
     try:
         # Configure your AWS credentials and region
-        aws_access_key_id = 'AKIAUFQ46Q3NUHBBGKXY'
-        aws_secret_access_key = 'OH2lfw2xUqm4zhHNxydIFFwwGRSg7Rz2cmKJZnmz'
+        aws_access_key_id = 'your aws keuy'
+        aws_secret_access_key = 'your aws secerete'
         aws_region = 'us-west-2'
 
         client = boto3.client('logs', region_name=aws_region, aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
