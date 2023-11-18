@@ -1,5 +1,6 @@
 import time
-from flask import Flask, render_template, request, redirect, url_for, session, flash, g
+from flask import Flask, render_template, request, redirect, url_for, session, flash, g, json
+import requests
 
 #from flask_login import current_user, LoginManager
 import psycopg2
@@ -19,6 +20,16 @@ app = Flask(__name__)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+def is_human(captcha_response):
+    """ Validating recaptcha response from google server
+        Returns True captcha test passed for submitted form else returns False.
+    """
+    secret = "6LcoghMpAAAAALzgksKxWTqpVniO2aupcz2y9UoF"
+    payload = {'response':captcha_response, 'secret':secret}
+    response = requests.post("https://www.google.com/recaptcha/api/siteverify", payload)
+    response_text = json.loads(response.text)
+    return response_text['success']
 
 # Function to send logs to AWS CloudWatch Logs
 def send_logs(log_group, log_stream, log_data):
@@ -110,7 +121,17 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 @limiter.limit("5 per minute")  # Adjust the rate limit as needed
 def login():
-
+ 
+    if request.method == "POST":
+        captcha_response = request.form['g-recaptcha-response']
+         
+        if is_human(captcha_response):
+            # Process request here
+            status = "Detail submitted successfully."
+        else:
+             # Log invalid attempts
+            status = "Sorry ! Please check I'm not a robot."
+            flash(status)
     if not validate_request():
         logger.info('reqeust validation fail')
         send_logs("428app", "request", 'reqeust validation fail')

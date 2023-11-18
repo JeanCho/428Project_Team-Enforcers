@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Page</title>
+    <script src="https://www.google.com/recaptcha/api.js"></script>
 </head>
 <body style="background-image: linear-gradient(to right, #ffefba, #ffffff);">
     <h1>Login</h1>
@@ -14,6 +15,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required><br><br>
         
+        <div class="g-recaptcha" data-sitekey="6LcoghMpAAAAAKqvT8mWloGrPs48kglymWc-U6Jf"></div> <br/>
         <button type="submit">Login</button> <br><br>
     </form>
     Don't have an account? Sign up <a href = "{{url_for('register') }}">here</a>!
